@@ -20,7 +20,7 @@ describe('Tarefas', () => {
             .should('be.visible')
     })
 
-    it.only('Não deve permitir o cadastro de duas tarefas iguais', () => {
+    it('Não deve permitir o cadastro de duas tarefas iguais', () => {
        
         //criação de objeto de valor constante
         const tarefa = {
@@ -38,41 +38,15 @@ describe('Tarefas', () => {
         //criação da 2ª Tarefa
         cy.criarTarefa(tarefa.name)
 
-        // verifica se existe uma tarefa igual já cadastrada
+        //verifica se existe uma tarefa igual já cadastrada
         cy.get('.swal2-html-container')
             .should('be.visible')
             .should('have.text', 'Task already exists!')
     })
 
-    Cypress.Commands.add('criarTarefa', (nomeTarefa)=> {
-        //STEP acessa a url da aplicação com a qual a automação irá interagir
-        cy.visit('http://localhost:3000');
+    it('Campo Add new task deve ser obrigatório', () => {
 
-        //STEP busca o elemento do tipo input e preenche com um valor
-        cy.get('input[placeholder="Add a new Task"]').type(nomeTarefa)
-
-        //STEP busca o elemento botão CREATE e clica nele
-        cy.contains('button', 'Create').click()
+        cy.criarTarefa()
+        cy.ValidaPreechimentoObrigatorio('This is a required field')
     })
-
-    Cypress.Commands.add('excluirTarefa', (nomeTarefa)=> {
-
-        cy.request({
-            url: 'http://localhost:3333/helper/tasks',
-            method: 'DELETE',
-            body: { name: nomeTarefa }
-        }).then(response => {
-            expect(response.status).to.eq(204)
-        })
-    })
-
-    /*Cypress.Commands.add('criarTarefaAPI', (tarefa)=> {
-        cy.request({
-            url: 'http://localhost:3333/tasks',
-            method: 'POST',
-            body: { name: tarefa.name, is_done: tarefa.is_done}
-        }).then(response => {
-            expect(response.status).to.eq(201)
-        })
-    })*/
 })
