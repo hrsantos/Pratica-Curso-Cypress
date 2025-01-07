@@ -6,68 +6,73 @@ describe('Tarefas', () => {
     // método para definir um caso de teste
     it('Deve cadastrar uma nova tarefa', () => {
 
-        const taskName ='Ler um livro de node JS'
-        //PREPARAR A MASSA DE TESTE: verifica via api se existe uma tarefa registrada
-        // e remove a tarefa se existir
+        const nomeTarefa ='Ler um livro de node JS'
 
-        //método cy.request que permite acessar e manipular dados diretamente em uma API
-        cy.request({
-            url: 'http://localhost:3333/helper/tasks',
-            method: 'DELETE',
-            body: { name: taskName }
-        }).then(response => {
-            expect(response.status).to.eq(204)
-        })
+        //exclui uma tarefa de mesmo nome caso ela já exista
+        cy.excluirTarefa(nomeTarefa)
 
-        //STEP acessa a url da aplicação com a qual a automação irá interagir
-        cy.visit('http://localhost:3000')
+        //cria nova tarefa
+        cy.criarTarefa(nomeTarefa)
 
-        //STEP busca o elemento do tipo input e preenche com um valor
-        cy.get('input[placeholder="Add a new Task"]').type(taskName)
-
-        //STEP busca o elemento botão CREATE e clica nele (XPATH button[text() = 'Create '])
-        cy.contains('button', 'Create').click()
-
-        //STEP verifica via mapeamendo de css selector se o elemento contém o texto esperado
-        // e verifica se o texto está visível 
-        cy.contains('main div p', taskName)
+        /*verifica via mapeamendo de css selector se o elemento contém o texto esperado
+        e verifica se o texto está visível*/ 
+        cy.contains('main div p', nomeTarefa)
             .should('be.visible')
     })
 
-    it('Não deve permitir o cadastro de duas tarefas iguais', () => {
+    it.only('Não deve permitir o cadastro de duas tarefas iguais', () => {
        
-        const task = {
+        //criação de objeto de valor constante
+        const tarefa = {
             name: 'Estudar JS',
             is_done: false
         }
 
         /*CRIAÇÃO DA MASSA VIA API DE FORMA A MANTER A INDEPENDÊNCIA ENTRE OS CENÁRIOS DE TESTES
-        necessita de correção no servidor
-        cy.request({
-            url: 'http://localhost:3333/tasks',
-            method: 'POST',
-            body: { name: 'Estudar JS', is_done: false}
-        }).then(response => {
-            expect(response.status).to.eq(201)
-        })*/
+        necessita de correção no servidor*/
+        //cy.criarTarefaAPI(tarefa)
 
-        //STEP Criação da 1ª Tarefa
-        cy.visit('http://localhost:3000');
+        //criação da 1ª Tarefa
+        cy.criarTarefa(tarefa.name)
 
-        cy.get('input[placeholder="Add a new Task"]').type(task.name)
+        //criação da 2ª Tarefa
+        cy.criarTarefa(tarefa.name)
 
-        cy.contains('button', 'Create').click()
-
-        //STEP Criação da 2ª Tarefa
-        cy.visit('http://localhost:3000');
-
-        cy.get('input[placeholder="Add a new Task"]').type(task.name)
-
-        cy.contains('button', 'Create').click()
-
-        //STEP verifica se existe uma tarefa igual já cadastrada
+        // verifica se existe uma tarefa igual já cadastrada
         cy.get('.swal2-html-container')
             .should('be.visible')
             .should('have.text', 'Task already exists!')
     })
+
+    Cypress.Commands.add('criarTarefa', (nomeTarefa)=> {
+        //STEP acessa a url da aplicação com a qual a automação irá interagir
+        cy.visit('http://localhost:3000');
+
+        //STEP busca o elemento do tipo input e preenche com um valor
+        cy.get('input[placeholder="Add a new Task"]').type(nomeTarefa)
+
+        //STEP busca o elemento botão CREATE e clica nele
+        cy.contains('button', 'Create').click()
+    })
+
+    Cypress.Commands.add('excluirTarefa', (nomeTarefa)=> {
+
+        cy.request({
+            url: 'http://localhost:3333/helper/tasks',
+            method: 'DELETE',
+            body: { name: nomeTarefa }
+        }).then(response => {
+            expect(response.status).to.eq(204)
+        })
+    })
+
+    /*Cypress.Commands.add('criarTarefaAPI', (tarefa)=> {
+        cy.request({
+            url: 'http://localhost:3333/tasks',
+            method: 'POST',
+            body: { name: tarefa.name, is_done: tarefa.is_done}
+        }).then(response => {
+            expect(response.status).to.eq(201)
+        })
+    })*/
 })
