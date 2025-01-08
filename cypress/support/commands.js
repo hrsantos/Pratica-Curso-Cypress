@@ -29,7 +29,7 @@
 
 Cypress.Commands.add('criarTarefa', (nomeTarefa = '') => {
     //STEP acessa a url da aplicação com a qual a automação irá interagir
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
 
     //cria alias para o campo input text
     cy.get('input[placeholder="Add a new Task"]').as('inputText')
@@ -46,7 +46,7 @@ Cypress.Commands.add('criarTarefa', (nomeTarefa = '') => {
 Cypress.Commands.add('excluirTarefa', (nomeTarefa) => {
 
     cy.request({
-        url: 'http://localhost:3333/helper/tasks',
+        url: Cypress.env('apiUrl') + '/helper/tasks',
         method: 'DELETE',
         body: { name: nomeTarefa }
     }).then(response => {
