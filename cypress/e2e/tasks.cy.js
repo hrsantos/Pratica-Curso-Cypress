@@ -52,4 +52,25 @@ describe('Tarefas', () => {
             cy.ValidaPreechimentoObrigatorio('This is a required field')
         })
     })
+    context('Atualização', () => {
+        it.only('Deve concluir uma tarefa', ()=>{
+
+            const taskName = 'Concluir tarefa criada'
+
+            cy.visit('http://localhost:3000/')
+
+            //Criação da massa
+            cy.excluirTarefa(taskName)
+            cy.criarTarefa(taskName)
+
+            //Step concluir tarefa
+            cy.contains('p',taskName)
+                .parent()
+                .find('button[class*=ItemToggle]').click()
+
+            //validação via propriedade CSS se o texto concluído está tracejado
+            cy.contains('p', taskName)
+                .should('have.css', 'text-decoration-line','line-through')
+        })
+    })
 })
