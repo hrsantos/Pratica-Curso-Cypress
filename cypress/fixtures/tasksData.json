@@ -1,0 +1,18 @@
+{
+    "dup": {
+        "name": "Criar tarefa duplicada",
+        "is_done": false
+    },
+    "nova": {
+        "name": "Criar nova Tarefa",
+        "is_done": false
+    },
+    "conc": {
+        "name": "Concluir Tarefa",
+        "is_done": false
+    },
+    "exc": {
+        "name": "Excluir Tarefa",
+        "is_done": false
+    }
+}

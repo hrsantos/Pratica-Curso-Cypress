@@ -3,12 +3,23 @@
 //método para definir uma suite de testes 
 describe('Tarefas', () => {
 
+    let testData
+
+    //hooks before - executado apenas uma vez antes de iniciar os testes
+    before(() => {
+        //método para atribuir a massa de testes do arquivo tasksData para a variável testData 
+        cy.fixture('tasksData').then(t => {
+            testData = t
+        })
+    })
+
     //organização dos testes por contexto
     context('Cadastro', () => {
+
         // método para definir um caso de teste
         it('Deve cadastrar uma nova tarefa', () => {
 
-            const nomeTarefa = 'Ler um livro de node JS'
+            const nomeTarefa = testData.nova.name
 
             //exclui uma tarefa de mesmo nome caso ela já exista
             cy.excluirTarefa(nomeTarefa)
@@ -25,10 +36,7 @@ describe('Tarefas', () => {
         it('Não deve permitir o cadastro de duas tarefas iguais', () => {
 
             //criação de objeto de valor constante
-            const tarefa = {
-                name: 'Estudar JS',
-                is_done: false
-            }
+            const tarefa = testData.dup
 
             /*CRIAÇÃO DA MASSA VIA API DE FORMA A MANTER A INDEPENDÊNCIA ENTRE OS CENÁRIOS DE TESTES
             necessita de correção no servidor*/
@@ -53,35 +61,37 @@ describe('Tarefas', () => {
         })
     })
     context('Atualização', () => {
-        it('Deve concluir uma tarefa', ()=>{
 
-            const taskName = 'Concluir tarefa criada'
+        it('Deve concluir uma tarefa', () => {
+
+            const taskName = testData.conc.name
 
             //Criação da massa
             cy.excluirTarefa(taskName)
             cy.criarTarefa(taskName)
 
             //Step concluir tarefa
-            cy.contains('p',taskName)
+            cy.contains('p', taskName)
                 .parent()
                 .find('button[class*=ItemToggle]').click()
 
             //validação via propriedade CSS se o texto concluído está tracejado
             cy.contains('p', taskName)
-                .should('have.css', 'text-decoration-line','line-through')
+                .should('have.css', 'text-decoration-line', 'line-through')
         })
     })
     context('Exclusão', () => {
-        it('Deve excluir uma tarefa', ()=>{
 
-            const taskName = 'Excluir tarefa criada'
+        it('Deve excluir uma tarefa', () => {
+
+            const taskName = testData.exc.name
 
             //Criação da massa
             cy.excluirTarefa(taskName)
             cy.criarTarefa(taskName)
 
             //Step concluir tarefa
-            cy.contains('p',taskName)
+            cy.contains('p', taskName)
                 .parent()
                 .find('button[class*=ItemDelete]')
                 .should('be.visible')
@@ -89,7 +99,7 @@ describe('Tarefas', () => {
 
             /*validação de exclusão da tarefa verificando se o elemento já não é mais 
             apresentado na tela*/
-            cy.contains('p',taskName)
+            cy.contains('p', taskName)
                 .should('not.exist')
         })
     })

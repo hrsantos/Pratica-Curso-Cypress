@@ -5,9 +5,13 @@ module.exports = defineConfig({
     //Config URL base
     baseUrl: 'http://localhost:3000',
     //Conig URL API
-    env:{
+    env: {
       apiUrl: 'http://localhost:3333'
     },
+    //Configuração de resolução de tela
+    viewportWidth: 1920,
+    viewportHeight: 1080,
+
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
