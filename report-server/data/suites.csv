@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","900","Deve excluir uma tarefa","Tarefas","Thu Jan 09 17:02:45 BRST 2025","passed","Thu Jan 09 17:02:46 BRST 2025","","Exclusão","",""
+"","2821","Não deve permitir o cadastro de duas tarefas iguais","Tarefas","Thu Jan 09 17:02:40 BRST 2025","passed","Thu Jan 09 17:02:43 BRST 2025","","Cadastro","",""
+"","1254","Deve concluir uma tarefa","Tarefas","Thu Jan 09 17:02:44 BRST 2025","passed","Thu Jan 09 17:02:45 BRST 2025","","Atualização","",""
+"","1557","web appdeve estar online","","Thu Jan 09 17:02:31 BRST 2025","passed","Thu Jan 09 17:02:32 BRST 2025","","home","",""
+"","2590","Deve cadastrar uma nova tarefa","Tarefas","Thu Jan 09 17:02:38 BRST 2025","passed","Thu Jan 09 17:02:40 BRST 2025","","Cadastro","",""
+"","384","Campo Add new task deve ser obrigatório","Tarefas","Thu Jan 09 17:02:43 BRST 2025","passed","Thu Jan 09 17:02:44 BRST 2025","","Cadastro","",""

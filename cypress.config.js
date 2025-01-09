@@ -1,4 +1,7 @@
 const { defineConfig } = require("cypress");
+//importação da biblioteca do plugin do Allure
+//https://github.com/Shelex/cypress-allure-plugin
+const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 
 module.exports = defineConfig({
   e2e: {
@@ -8,12 +11,15 @@ module.exports = defineConfig({
     env: {
       apiUrl: 'http://localhost:3333'
     },
+
     //Configuração de resolução de tela
     viewportWidth: 1920,
     viewportHeight: 1080,
 
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      //Configuração Allure
+      allureWriter(on, config);
+      return config;
     },
   },
 });
